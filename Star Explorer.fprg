@@ -1,0 +1,379 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="2.11">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="Lenovo"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2022-02-02 09:00:54 PM"/>
+        <attribute name="created" value="TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTIyOzA5OjQ2OjM5IFBNOzMwMTk="/>
+        <attribute name="edited" value="TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTIyOzExOjEyOjMzIFBNOzk7U2thbGE7REVTS1RPUC1FME81STNIOzIwMTktMDktMTI7MTE6NDc6MjQgQU07U25haWwtU2hhcGUtTWF0cml4LmZwcmc7ODIyMQ=="/>
+        <attribute name="edited" value="TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTI0OzExOjU0OjQzIFBNOzE7RGVMTDtERVNLVE9QLUpMS0JUOVA7MjAyMC0xMS0yMDswMjoyNzo0OCBQTTtSZWFkIHRocmVlIG51bWJlcnMgYW5kIGRpc3BsYXkgdGhlIHNtYWxsZXN0IG9uZS5mcHJnOzEwODgz"/>
+        <attribute name="edited" value="TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTI1OzAzOjM4OjE2IEFNOzE7TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTI1OzAzOjAwOjMwIEFNOzYxNDY="/>
+        <attribute name="edited" value="TGVub3ZvO0RFU0tUT1AtT05CUE9HRjsyMDIyLTAxLTI2OzExOjA5OjQ3IFBNOzM4OzMxODA="/>
+        <attribute name="edited" value="eW9zaG47WU9TSE5JLUlERUFQQUQ7MjAyMi0wMi0wMjswOTowMDo1NCBQTTs2NDszMDA1"/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <declare name="N, d, M, i, j" type="Integer" array="False" size=""/>
+            <comment text="Computation of a matrix&#13;&#10;Matrix size NxM&#13;&#10;positions for a number - d"/>
+            <output expression="&quot;Enter size of Square Grid: &quot;" newline="True"/>
+            <input variable="N"/>
+            <comment text="In our problem statement, the size of the room is given as NxN, hence M=N"/>
+            <assign variable="M" expression="N"/>
+            <comment text="d determines in which position the value will be printed in the matrix with respect to the columns"/>
+            <assign variable="d" expression="N"/>
+            <declare name="A" type="Integer" array="True" size="N*M"/>
+            <comment text="Initialize matrix"/>
+            <call expression="Arena(A,N,M)"/>
+            <call expression="PrintMatrix(A,N,M,d)"/>
+            <call expression="FinalDestInitialPos(A,N,M)"/>
+            <comment text="Final Destination is numbered as 1"/>
+            <comment text="Initial Position is numbered as 0"/>
+            <call expression="PrintMatrix(A,N,M,d)"/>
+            <output expression="&quot;Obstacles: &quot;" newline="True"/>
+            <call expression="Obstacles(A,N,M)"/>
+            <comment text="Obstacles are numbered as a value greater than N*M&#13;&#10;Example: &#13;&#10;In a 5*5 grid, obstacles will be numbered as 26"/>
+            <call expression="PrintMatrix(A,N,M,d)"/>
+            <output expression="&quot;Possible Paths: &quot;" newline="True"/>
+            <call expression="PathPlan(A,N,M)"/>
+            <comment text="All possible paths from 1 to 0 are numbered sequentially"/>
+            <comment text="Shortest possible path from initial position to final destination"/>
+        </body>
+    </function>
+    <function name="Arena" type="None" variable="">
+        <parameters>
+            <parameter name="A" type="Integer" array="True"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i, k, s" type="Integer" array="False" size=""/>
+            <assign variable="s" expression="-1"/>
+            <comment text="In order to differentiate cell coordinates from path coordinates, negative numbering is used"/>
+            <for variable="k" start="N" end="1" direction="dec" step="1">
+                <for variable="i" start="1" end="M" direction="inc" step="1">
+                    <assign variable="A[Index(k,i,N,M)]" expression="s"/>
+                    <assign variable="s" expression="s-1"/>
+                </for>
+            </for>
+            <comment text="Since, we are initializing are matrix values from the last row, say in a 5*5 matrix, the first value which is -1 is assigned to the index position [5,1], the second value [5,2] and so on."/>
+            <comment text="Hence, the x-coordinate goes from N to 1 and the y-coordinate goes from 1 to M."/>
+        </body>
+    </function>
+    <function name="FinalDestInitialPos" type="None" variable="">
+        <parameters>
+            <parameter name="A" type="Integer" array="True"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i, j" type="Integer" array="False" size=""/>
+            <comment text="Since the initial position in the matrix will be given the value 0, the final position as 1."/>
+            <output expression="&quot;Specify final destination: &quot;" newline="True"/>
+            <output expression="&quot;Enter row: &quot;" newline="True"/>
+            <input variable="i"/>
+            <output expression="&quot;Enter column: &quot;" newline="True"/>
+            <input variable="j"/>
+            <assign variable="A[Index(i,j,N,M)]" expression="1"/>
+            <output expression="&quot;Specify initial position: &quot;" newline="True"/>
+            <output expression="&quot;Enter row: &quot;" newline="True"/>
+            <input variable="i"/>
+            <output expression="&quot;Enter column: &quot;" newline="True"/>
+            <input variable="j"/>
+            <if expression="A[Index(i,j,N,M)]!=1">
+                <then>
+                    <assign variable="A[Index(i,j,N,M)]" expression="0"/>
+                </then>
+                <else>
+                    <output expression="&quot;The initial position and final destination should not have the same co-ordinates&quot;" newline="True"/>
+                    <breakpoint/>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="Index" type="Integer" variable="Adr">
+        <parameters>
+            <parameter name="i" type="Integer" array="False"/>
+            <parameter name="j" type="Integer" array="False"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="Adr" type="Integer" array="False" size=""/>
+            <comment text="Check if index [i,j] is in the correct range&#13;&#10;1 &lt;= i &lt;= N  &amp;  1 &lt;= j &lt;= M"/>
+            <assign variable="Adr" expression="0"/>
+            <if expression="InRange(i,j,N,M)">
+                <then>
+                    <assign variable="Adr" expression="(i-1)*M+j-1"/>
+                </then>
+                <else>
+                    <comment text="The co-ordinates entered are not in the range of the matrix"/>
+                    <output expression="&quot;Error bounds: &quot; &amp; &quot; i=&quot;&amp;i &amp; &quot; j=&quot;&amp;j &amp; &quot; N=&quot;&amp; N &amp; &quot; M=&quot; &amp;M" newline="True"/>
+                    <breakpoint/>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="InRange" type="Boolean" variable="Result">
+        <parameters>
+            <parameter name="i" type="Integer" array="False"/>
+            <parameter name="j" type="Integer" array="False"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="Result" type="Boolean" array="False" size=""/>
+            <assign variable="Result" expression="1&lt;=i &amp;&amp; i&lt;=N &amp;&amp; 1&lt;=j &amp;&amp; j&lt;=M"/>
+        </body>
+    </function>
+    <function name="IntToString" type="String" variable="Str">
+        <parameters>
+            <parameter name="K" type="Integer" array="False"/>
+            <parameter name="d" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <comment text="Converts the integer K to a string of a length d "/>
+            <declare name="Str, Str1" type="String" array="False" size=""/>
+            <declare name="L, i" type="Integer" array="False" size=""/>
+            <assign variable="Str" expression="&quot;&quot;"/>
+            <comment text="Interger to string conversion"/>
+            <assign variable="Str1" expression="ToString(K)"/>
+            <assign variable="L" expression="Len(Str1)"/>
+            <comment text="Genereates spaces in front of the number"/>
+            <for variable="i" start="1" end="d-L" direction="inc" step="1">
+                <assign variable="Str" expression="Str&amp;&quot; &quot;"/>
+            </for>
+            <comment text="Copying digits to the output string"/>
+            <for variable="i" start="1" end="L" direction="inc" step="1">
+                <assign variable="Str" expression="Str&amp;Char(Str1,i-1)"/>
+            </for>
+        </body>
+    </function>
+    <function name="Obstacles" type="None" variable="">
+        <parameters>
+            <parameter name="A" type="Integer" array="True"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="c, x, y, z" type="Integer" array="False" size=""/>
+            <declare name="i, j" type="Integer" array="False" size=""/>
+            <assign variable="z" expression="(M*N)+1"/>
+            <comment text="Obstacles are numbered as a value greater than N*M&#13;&#10;Example: &#13;&#10;In a 5*5 grid, obstacles will be numbered as 26"/>
+            <output expression="&quot;Enter no. of obstacles: &quot;" newline="True"/>
+            <input variable="c"/>
+            <output expression="&quot;Specify position of obstacles: &quot;" newline="True"/>
+            <for variable="x" start="0" end="c-1" direction="inc" step="1">
+                <output expression="&quot;Enter row: &quot;" newline="True"/>
+                <input variable="i"/>
+                <output expression="&quot;Enter column: &quot;" newline="True"/>
+                <input variable="j"/>
+                <assign variable="A[Index(i,j,N,M)]" expression="z"/>
+            </for>
+        </body>
+    </function>
+    <function name="PathPlan" type="None" variable="">
+        <parameters>
+            <parameter name="A" type="Integer" array="True"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i, j, g, h, d" type="Integer" array="False" size=""/>
+            <assign variable="d" expression="N"/>
+            <comment text="For the robot to locate the final destination, we are assigning the value 1 to a variable g"/>
+            <assign variable="g" expression="1"/>
+            <for variable="h" start="1" end="N*M" direction="inc" step="1">
+                <for variable="i" start="1" end="N" direction="inc" step="1">
+                    <for variable="j" start="1" end="M" direction="inc" step="1">
+                        <if expression="A[Index(i,j,N,M)]==g">
+                            <then>
+                                <comment text="Up"/>
+                                <if expression="(i-1)&gt;0">
+                                    <then>
+                                        <if expression="A[Index(i-1,j,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i-1,j,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i-1,j,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </then>
+                                    <else>
+                                        <if expression="A[Index(i+1,j,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i+1,j,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i+1,j,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                                <comment text="Left"/>
+                                <if expression="(j-1)&gt;0">
+                                    <then>
+                                        <if expression="A[Index(i,j-1,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i,j-1,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i,j-1,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </then>
+                                    <else>
+                                        <if expression="A[Index(i,j+1,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i,j+1,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i,j+1,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                                <comment text="Down"/>
+                                <if expression="(i+1)&lt;=N">
+                                    <then>
+                                        <if expression="A[Index(i+1,j,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i+1,j,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i+1,j,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </then>
+                                    <else>
+                                        <if expression="A[Index(i-1,j,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i-1,j,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i-1,j,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                                <comment text="Right"/>
+                                <if expression="(j+1)&lt;=M">
+                                    <then>
+                                        <if expression="A[Index(i,j+1,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i,j+1,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i,j+1,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </then>
+                                    <else>
+                                        <if expression="A[Index(i,j-1,N,M)]==0">
+                                            <then>
+                                                <call expression="PrintMatrix(A,N,M,d)"/>
+                                                <output expression="&quot;Initial Position reached&quot;" newline="True"/>
+                                                <output expression="&quot;Final Path: The shortest path is from 1 to &quot;&amp;g" newline="True"/>
+                                                <breakpoint/>
+                                            </then>
+                                            <else>
+                                                <if expression="A[Index(i,j-1,N,M)]&lt;0">
+                                                    <then>
+                                                        <assign variable="A[Index(i,j-1,N,M)]" expression="g+1"/>
+                                                    </then>
+                                                    <else/>
+                                                </if>
+                                            </else>
+                                        </if>
+                                    </else>
+                                </if>
+                            </then>
+                            <else/>
+                        </if>
+                    </for>
+                </for>
+                <assign variable="g" expression="g+1"/>
+            </for>
+            <output expression="&quot;Since there are obstacles blocking all possible paths, the Robot will not reach the final destination.&quot;" newline="True"/>
+        </body>
+    </function>
+    <function name="PrintMatrix" type="None" variable="">
+        <parameters>
+            <parameter name="A" type="Integer" array="True"/>
+            <parameter name="N" type="Integer" array="False"/>
+            <parameter name="M" type="Integer" array="False"/>
+            <parameter name="D" type="Integer" array="False"/>
+        </parameters>
+        <body>
+            <declare name="i, j, k" type="Integer" array="False" size=""/>
+            <declare name="S" type="String" array="False" size=""/>
+            <comment text="Prints Integer matrix (table) of the size N rows x M columns.&#13;&#10;Each element occupies D positions."/>
+            <for variable="i" start="1" end="N" direction="inc" step="1">
+                <assign variable="S" expression="&quot;&quot;"/>
+                <for variable="j" start="1" end="M" direction="inc" step="1">
+                    <assign variable="k" expression="A[Index(i,j,N,M)]"/>
+                    <assign variable="S" expression="S &amp; IntToString(k,D)"/>
+                </for>
+                <output expression="S" newline="True"/>
+            </for>
+        </body>
+    </function>
+</flowgorithm>
